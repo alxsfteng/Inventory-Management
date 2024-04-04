@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Inventory Management</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-bs-toggle="tab">Warehouses</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="container mt-4">
+            <div class="tab-content" id="myTabContent">
+                <!-- Warehouses Tab Content -->
+                <div class="tab-pane fade show active" id="warehouses-tab" role="tabpanel">
+                    <h2>Warehouses</h2>
+                    <!-- Table to display warehouses -->
+                    <table class="table table-striped" id="warehouse-table">
+                        <thead>
+                            <tr>
+                                <th>Warehouse ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Max Capacity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="warehouse-table-body">
+                            <!-- Data will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    <!-- Add Warehouse Button -->
+                    <button class="btn btn-primary add-warehouse-btn">Add Warehouse</button>
+                </div>
+                <!-- Items Tab Content -->
+                <div class="tab-pane fade" id="items-tab" role="tabpanel">
+                    <h2>Items</h2>
+                    <!-- Table to display items in the selected warehouse -->
+                    <table class="table table-striped" id="item-table">
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Warehouse ID</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="item-table-body">
+                            <!-- Data will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    <!-- Add Item Button -->
+                    <button class="btn btn-primary add-item-btn">Add Item</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Modal for editing warehouses -->
+    <div class="modal fade" id="warehouseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="warehouseModalLabel">Add/Edit Warehouse</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="warehouseForm">
+                        <div class="mb-3">
+                            <label for="warehouseName" class="form-label">Warehouse Name</label>
+                            <input type="text" class="form-control" id="warehouseName" name="warehouseName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="warehouseLocation" class="form-label">Warehouse Location</label>
+                            <input type="text" class="form-control" id="warehouseLocation" name="warehouseLocation"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="maxCapacity" class="form-label">Max Capacity</label>
+                            <input type="number" class="form-control" id="maxCapacity" name="maxCapacity" required>
+                        </div>
+                        <input type="hidden" id="warehouseId" name="warehouseId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveWarehouseBtn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Warehouse Modal -->
+    <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addWarehouseModalLabel">Add Warehouse</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addWarehouseForm">
+                        <div class="mb-3">
+                            <label for="addWarehouseName" class="form-label">Warehouse Name</label>
+                            <input type="text" class="form-control" id="addWarehouseName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addWarehouseLocation" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="addWarehouseLocation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addWarehouseCapacity" class="form-label">Max Capacity</label>
+                            <input type="number" class="form-control" id="addWarehouseCapacity" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveAddWarehouseBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Needed to use modal and bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../javascript/index.js" defer></script>
+
+    <!-- JS to navigate the tabs -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const homeTab = document.querySelector('.nav-link[href="home.html"]');
+            if (homeTab) {
+                homeTab.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    window.location.href = homeTab.href;
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

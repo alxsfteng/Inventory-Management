@@ -293,6 +293,8 @@ function saveAddWarehouse() {
     .then(newWarehouse => {
         addWarehouseToTable(newWarehouse);
         $('#addWarehouseModal').modal('hide'); 
+
+        location.reload();
     })
     .catch(error => {
         console.error('Error adding warehouse:', error);

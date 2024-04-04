@@ -21,10 +21,12 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
+    // Get all items 
     public List<Item> getAllItems(){
         return itemRepository.findAll();
     }
 
+    // Get an item but itemId
     public Item getItemById(int id){
         Optional<Item> item = itemRepository.findById(id);
 
@@ -34,10 +36,12 @@ public class ItemService {
         return null;
     }
 
+    // Get items by warehouseId
     public List<Item> getItemsByWarehouseId(int warehouseId){
         return itemRepository.findByWarehouseId(warehouseId);
     }
 
+    // Used to get the name of the warehouse for the item easier
     public List<ItemDto> getItemWithWarehouseName(int warehouseId){
         List<Item> items = itemRepository.findByWarehouseId(warehouseId);
         List<ItemDto> itemDtos = new ArrayList<>();
@@ -52,14 +56,17 @@ public class ItemService {
         return itemDtos;
     }
 
+    // Saves a new item
     public Item saveItem(Item item){
         return itemRepository.save(item);
     }
 
+    // Updates an existing item
     public int updateItem(int id, String newNam, int newQuantity){
         return itemRepository.updateItem(id, newNam, newQuantity);
     }
     
+    // Ddeltes an item
     public void deleteItem(int id){
         itemRepository.deleteById(id);
     }

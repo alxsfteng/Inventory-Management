@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface WarehouseRepository extends JpaRepository<Warehouse, Integer>{
     
+    // Update the warehouse
     @Transactional
     @Modifying
     @Query("UPDATE Warehouse w SET w.name = :newName, w.location = :newLocation, w.maxCapacity = :newMaxCapacity WHERE w.id = :id")

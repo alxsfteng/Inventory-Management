@@ -15,11 +15,13 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer>{
     
+    // Updates the Item
     @Transactional
     @Modifying
     @Query("UPDATE Item i SET i.name = :newName, i.quantity = :newQuantity WHERE i.id = :id")
     int updateItem(@Param("id") int id, @Param("newName") String newName, @Param("newQuantity") int newQuantity);
 
+    // Get a list of items by warehouseId
     List<Item> findByWarehouseId(int warehouseId);
     
 }

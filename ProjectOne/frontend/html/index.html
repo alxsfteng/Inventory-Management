@@ -50,29 +50,7 @@
                             <!-- Data will be dynamically added here -->
                         </tbody>
                     </table>
-                    <!-- Add Warehouse Button -->
                     <button class="btn btn-primary add-warehouse-btn">Add Warehouse</button>
-                </div>
-                <!-- Items Tab Content -->
-                <div class="tab-pane fade" id="items-tab" role="tabpanel">
-                    <h2>Items</h2>
-                    <!-- Table to display items in the selected warehouse -->
-                    <table class="table table-striped" id="item-table">
-                        <thead>
-                            <tr>
-                                <th>Item ID</th>
-                                <th>Name</th>
-                                <th>Quantity</th>
-                                <th>Warehouse ID</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="item-table-body">
-                            <!-- Data will be dynamically added here -->
-                        </tbody>
-                    </table>
-                    <!-- Add Item Button -->
-                    <button class="btn btn-primary add-item-btn">Add Item</button>
                 </div>
             </div>
         </div>
@@ -89,16 +67,15 @@
                     <form id="warehouseForm">
                         <div class="mb-3">
                             <label for="warehouseName" class="form-label">Warehouse Name</label>
-                            <input type="text" class="form-control" id="warehouseName" name="warehouseName" required>
+                            <input type="text" class="form-control" id="warehouseName" name="warehouseName" required/>
                         </div>
                         <div class="mb-3">
                             <label for="warehouseLocation" class="form-label">Warehouse Location</label>
-                            <input type="text" class="form-control" id="warehouseLocation" name="warehouseLocation"
-                                required>
+                            <input type="text" class="form-control" id="warehouseLocation" name="warehouseLocation" required/>
                         </div>
                         <div class="mb-3">
                             <label for="maxCapacity" class="form-label">Max Capacity</label>
-                            <input type="number" class="form-control" id="maxCapacity" name="maxCapacity" required>
+                            <input type="number" class="form-control" id="maxCapacity" name="maxCapacity" required readonly/>
                         </div>
                         <input type="hidden" id="warehouseId" name="warehouseId">
                     </form>
@@ -123,15 +100,15 @@
                     <form id="addWarehouseForm">
                         <div class="mb-3">
                             <label for="addWarehouseName" class="form-label">Warehouse Name</label>
-                            <input type="text" class="form-control" id="addWarehouseName" required>
+                            <input type="text" class="form-control" id="addWarehouseName" required/>
                         </div>
                         <div class="mb-3">
                             <label for="addWarehouseLocation" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="addWarehouseLocation" required>
+                            <input type="text" class="form-control" id="addWarehouseLocation" required/>
                         </div>
                         <div class="mb-3">
                             <label for="addWarehouseCapacity" class="form-label">Max Capacity</label>
-                            <input type="number" class="form-control" id="addWarehouseCapacity" required>
+                            <input type="number" class="form-control" id="addWarehouseCapacity" required/>
                         </div>
                     </form>
                 </div>

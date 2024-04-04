@@ -32,8 +32,17 @@
     </nav>
     <main>
         <div class="container mt-4">
-            <h2>Items in Warehouse</h2>
-            <div>Current Capacity: <span id="totalQuantityCapacity"></span></div>
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Items in Warehouse</h2>
+                <div class="text-end">
+                    <div>Current Capacity: <span id="totalQuantityCapacity"></span></div>
+                </div>
+            </div>
+            <!-- Add Item button below the page title -->
+            <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">Add
+                    Item</button>
+            </div>
             <!-- Table to display items -->
             <table class="table table-striped">
                 <thead>
@@ -49,12 +58,9 @@
                     <!-- Data will be dynamically added here -->
                 </tbody>
             </table>
-            <!-- Button to Add Item -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#addItemModal">AddItem</button>
-            <br>
-            <br>
-            <a href="index.html" class="btn btn-primary">Back to Warehouses</a>
+            <div class="mt-3">
+                <a href="index.html" class="btn btn-primary">Back to Warehouses</a>
+            </div>
 
             <!-- Edit Item Modal -->
             <div class="modal fade" id="editItemModal" tabindex="-1" aria-hidden="true">
@@ -68,12 +74,13 @@
                             <form id="editItemForm">
                                 <div class="mb-3">
                                     <label for="editItemName" class="form-label">Item Name</label>
-                                    <input class="form-control" id="editItemName" name="editItemName" type="text" required/>
+                                    <input class="form-control" id="editItemName" name="editItemName" type="text"
+                                        required readonly />
                                 </div>
                                 <div class="mb-3">
                                     <label for="editItemQuantity" class="form-label">Item Quantity</label>
                                     <input type="number" class="form-control" id="editItemQuantity"
-                                        name="editItemQuantity" required>
+                                        name="editItemQuantity" required min />
                                 </div>
                                 <input type="hidden" id="editItemId" name="editItemId">
                             </form>
@@ -98,12 +105,13 @@
                             <form id="addItemForm">
                                 <div class="mb-3">
                                     <label for="itemNameModal" class="form-label">Item Name</label>
-                                    <input class="form-select" id="itemNameModal" name="itemNameModal" type="text" required>
+                                    <input class="form-select" id="itemNameModal" name="itemNameModal" type="text"
+                                        required />
                                 </div>
                                 <div class="mb-3">
                                     <label for="itemQuantityModal" class="form-label">Item Quantity</label>
                                     <input type="number" class="form-control" id="itemQuantityModal"
-                                        name="itemQuantityModal" required>
+                                        name="itemQuantityModal" required />
                                 </div>
                                 <input type="hidden" id="itemIdModal" name="itemIdModal">
                             </form>

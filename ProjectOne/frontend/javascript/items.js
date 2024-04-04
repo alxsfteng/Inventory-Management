@@ -29,10 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('saveEditItemBtn').addEventListener('click', saveEditedItem);
 
     // Add event listener for opening the edit item modal
-    const openEditItemModalBtn = document.getElementById('openEditItemModalBtn');
-    if (openEditItemModalBtn) {
-        openEditItemModalBtn.addEventListener('click', openEditItemModal);
-    }
+    document.getElementById('openEditItemModalBtn')?.addEventListener('click', openEditItemModal);
 
     // Updates the total item/max capacity ratio
     updateTotalQuantity();
@@ -128,6 +125,8 @@ function fetchItemsByWarehouseId(warehouseId) {
 
 // Add items to table
 function addItemToTable(item) {
+
+    // Create each element
     let tr = document.createElement('tr');
     let id = document.createElement('td');
     let name = document.createElement('td');
@@ -136,6 +135,7 @@ function addItemToTable(item) {
     let editBtn = document.createElement('td');
     let deleteBtn = document.createElement('td');
 
+    // Apply each element
     id.innerText = item.id;
     name.innerText = item.name;
     quantity.innerText = item.quantity;
@@ -158,6 +158,7 @@ function addItemToTable(item) {
 
     document.getElementById('item-table-body').appendChild(tr);
 
+    // Populate allItems array
     allItems.push(item);
 }
 
@@ -165,12 +166,14 @@ function addItemToTable(item) {
 async function saveItem(event) {
     event.preventDefault();
 
+    // Grabs save element button
     const buttonElement = document.getElementById('saveAddItemBtn');
     if (!buttonElement) {
         console.error('Button element not found.');
         return;
     }
 
+    // Gets warehouseId from URL
     const urlParams = new URLSearchParams(window.location.search);
     const warehouseId = urlParams.get('id');
     if (!warehouseId) {
@@ -178,6 +181,7 @@ async function saveItem(event) {
         return;
     }
 
+    // Validates the item form inputs
     if (!validateItemForm()) {
         return;
     }
@@ -190,16 +194,16 @@ async function saveItem(event) {
         }
         const warehouseData = await warehouseResponse.json();
         const warehouseCapacity = warehouseData.maxCapacity;
-        
+
         const itemsResponse = await fetch(`${itemURL}/item/warehouse/${warehouseId}`);
         if (!itemsResponse.ok) {
             throw new Error('Failed to fetch items for warehouse');
         }
         const currentItems = await itemsResponse.json();
-        
+
         // Calculate total quantity of items in each warehouse
         let totalQuantity = currentItems.reduce((total, item) => total + parseInt(item.quantity), 0);
-        
+
         const formData = new FormData(document.getElementById('addItemForm'));
         const newItemQuantity = parseInt(formData.get('itemQuantityModal'));
 
@@ -260,6 +264,8 @@ async function saveItem(event) {
 // Edits an item
 function editItem(itemId) {
     console.log(allItems);
+
+    // Finds items to update from Id
     let itemToUpdate = allItems.find(item => item.id === itemId);
 
     if (!itemToUpdate) {
@@ -267,10 +273,12 @@ function editItem(itemId) {
         return;
     }
 
+    // Sets values for item modal
     document.getElementById('editItemId').value = itemToUpdate.id;
     document.getElementById('editItemName').value = itemToUpdate.name;
     document.getElementById('editItemQuantity').value = itemToUpdate.quantity;
 
+    // Show modal
     let editModal = new bootstrap.Modal(document.getElementById('editItemModal'));
     editModal.show();
 }
@@ -279,16 +287,20 @@ function editItem(itemId) {
 async function saveEditedItem(event) {
     event.preventDefault();
 
+    //Get form data 
     const formData = new FormData(document.getElementById('editItemForm'));
+
+    // Create an object for the edited item
     const editedItem = {
         name: formData.get('editItemName'),
         quantity: parseInt(formData.get('editItemQuantity'))
     };
 
-    const itemId = formData.get('editItemId'); 
+    // Gets the edited item's id
+    const itemId = formData.get('editItemId');
 
     try {
-        // Fetches item details, warehouse details, and current items for the warehouse
+        // Fetches item details
         const itemResponse = await fetch(`${itemURL}/${itemId}`);
         if (!itemResponse.ok) {
             throw new Error('Failed to fetch item details');
@@ -296,9 +308,11 @@ async function saveEditedItem(event) {
         const itemData = await itemResponse.json();
         console.log("Item data:", itemData);
 
+        // Gets warehouseId for a specific item
         const warehouseId = itemData.warehouse.id;
         console.log("Warehouse ID:", warehouseId);
 
+        // Fetches the details of a warehouse associated with the item
         const warehouseResponse = await fetch(`http://localhost:8080/warehouse/${warehouseId}`);
         if (!warehouseResponse.ok) {
             throw new Error('Failed to fetch warehouse details');
@@ -306,6 +320,7 @@ async function saveEditedItem(event) {
         const warehouseData = await warehouseResponse.json();
         console.log("Warehouse data:", warehouseData);
 
+        // Fetches the current items in a specific warehouse
         const itemsResponse = await fetch(`${itemURL}/warehouse/${warehouseId}`);
         if (!itemsResponse.ok) {
             throw new Error('Failed to fetch items for warehouse');
@@ -323,6 +338,7 @@ async function saveEditedItem(event) {
         }, 0);
         console.log("Total quantity:", totalQuantity);
 
+        // Calculate the remaining capacity
         const remainingCapacity = warehouseData.maxCapacity - totalQuantity;
         console.log("Remaining capacity:", remainingCapacity);
 
@@ -337,6 +353,7 @@ async function saveEditedItem(event) {
             method: 'PUT'
         });
 
+        // Update the total quantity after editing makes sure the PUT request was successful
         if (response.ok) {
             console.log('Item updated successfully.');
             updateTotalQuantity();
@@ -363,6 +380,7 @@ async function deleteItem(itemId) {
         fetch(`${itemURL}/${itemId}`, {
             method: 'DELETE',
         })
+            // If successfull then the item will be removed from the table and update the total quantity
             .then(response => {
                 if (response.ok) {
                     console.log('Item deleted success');
@@ -383,6 +401,8 @@ async function deleteItem(itemId) {
 // Removes item from a table
 function removeItemFromTable(itemId) {
     const elementToRemove = document.getElementById('TR' + itemId);
+
+    // Checks if the element exists and removes it from the table and allItems array
     if (elementToRemove) {
         elementToRemove.remove();
         allItems = allItems.filter(item => item.id !== itemId);
@@ -394,12 +414,15 @@ function removeItemFromTable(itemId) {
 
 // Validates the add/edit item form
 function validateItemForm() {
+    // Get input elemtns for the items
     const itemNameInput = document.getElementById('itemNameModal');
     const itemQuantityInput = document.getElementById('itemQuantityModal');
 
+    // Trim the values to make sure formating is correct
     const itemName = itemNameInput ? itemNameInput.value.trim() : '';
     const itemQuantity = itemQuantityInput ? itemQuantityInput.value.trim() : '';
 
+    // Alert by checking if the field is empty
     if (itemName === '' || itemQuantity === '') {
         alert('Please fill in all required fields.');
         return false;
@@ -442,16 +465,18 @@ function openEditItemModal() {
 
 // Updates the total quantity and max capacity ratio
 async function updateTotalQuantity() {
+    // Get warehouseId
     const urlParams = new URLSearchParams(window.location.search);
     const warehouseId = urlParams.get('id');
 
+    // Checks if the warehouseId is there
     if (!warehouseId) {
         console.error('Warehouse ID not found in URL parameters.');
         return;
     }
 
     try {
-        // Fetches the warehouse details and current items for the warehouse
+        // Fetches the warehouse details 
         const warehouseResponse = await fetch(`http://localhost:8080/warehouse/${warehouseId}`);
         if (!warehouseResponse.ok) {
             throw new Error('Failed to fetch warehouse details');
@@ -459,6 +484,7 @@ async function updateTotalQuantity() {
         const warehouseData = await warehouseResponse.json();
         const warehouseCapacity = warehouseData.maxCapacity;
 
+        // Fetches the item details for a specific warehosue
         const itemsResponse = await fetch(`${itemURL}/item/warehouse/${warehouseId}`);
         if (!itemsResponse.ok) {
             throw new Error('Failed to fetch items for warehouse');
@@ -469,6 +495,8 @@ async function updateTotalQuantity() {
         let totalQuantity = currentItems.reduce((total, item) => total + parseInt(item.quantity), 0);
         // Calculate the ratio of total quantity to max capacity
         let ratio = `${totalQuantity} / ${warehouseCapacity}`;
+
+        // Update HTML
         document.getElementById('totalQuantityCapacity').innerText = ratio;
     } catch (error) {
         console.error('Error updating total quantity:', error);

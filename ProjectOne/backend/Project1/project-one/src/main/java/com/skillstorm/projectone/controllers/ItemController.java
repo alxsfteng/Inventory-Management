@@ -28,36 +28,42 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    // Get all items
     @GetMapping
     public ResponseEntity<List<Item>> getAllItems(){
         List<Item> items = itemService.getAllItems();
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    // Get an item by itemId
     @GetMapping("/{id}")
     public ResponseEntity<Item> getItemById(@PathVariable int id){
         Item item = itemService.getItemById(id);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
+    // Get the item by warehouseId
     @GetMapping("/item/warehouse/{warehouseId}")
     public ResponseEntity<List<Item>> getItemsByWarehouseId(@PathVariable int warehouseId) {
         List<Item> items = itemService.getItemsByWarehouseId(warehouseId);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    // Get name of the warehouse for the Item
     @GetMapping("/warehouse/{warehouseId}")
     public ResponseEntity<List<ItemDto>> getItemsWithWarehouseName(@PathVariable int warehouseId) {
         List<ItemDto> itemsWithWarehouseName = itemService.getItemWithWarehouseName(warehouseId);
         return new ResponseEntity<List<ItemDto>>(itemsWithWarehouseName, HttpStatus.OK);
     }
     
+    // Creates an item
     @PostMapping
     public ResponseEntity<Item> createItem(@RequestBody Item item){
         Item newItem = itemService.saveItem(item);
         return new ResponseEntity<>(newItem, HttpStatus.CREATED);
     }
 
+    // Updates an item
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateItem(@PathVariable int id, @RequestParam String name, @RequestParam int quantity){
         int updatedCount = itemService.updateItem(id, name, quantity);
@@ -67,6 +73,7 @@ public class ItemController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // Deletes an item
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable int id){
         itemService.deleteItem(id);

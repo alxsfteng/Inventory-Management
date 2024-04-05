@@ -46,12 +46,6 @@ public class ItemServiceTest {
         savedItem = itemRepository.save(newItem);
     }
 
-    @AfterEach
-    public void tearDown() {
-        itemRepository.deleteAll();
-        warehouseRepository.deleteAll();
-    }
-
     @Test
     public void testGetAllItems() {
         List<Item> items = itemService.getAllItems();

@@ -35,15 +35,10 @@ public class WarehouseServiceTest {
         savedWarehouse = warehouseRepository.save(newWarehouse);
     }
 
-    @AfterEach
-    public void tearDown() {
-        warehouseRepository.deleteAll();
-    }
-
     @Test
     public void testGetAllWarehouses() {
         List<Warehouse> warehouses = warehouseService.getAllWarehouses();
-    assertNotNull(warehouses);
+        assertNotNull(warehouses);
         assertEquals(1, warehouses.size());
         assertEquals(savedWarehouse, warehouses.get(0));
     }
